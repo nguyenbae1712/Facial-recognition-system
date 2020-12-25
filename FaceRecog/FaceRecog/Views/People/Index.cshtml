@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FaceRecog.Models.Person>
+
+@using FaceRecog.Models;
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    DiemdanhEntities db = new DiemdanhEntities();
+    int id = int.Parse(Request.Cookies["PersonId"].Value);
+    var acc = from e in db.People
+              where e.ID == id
+              select e;
+}
+
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-6">
+            <div class="profile-content">
+                @using (Html.BeginForm(null, "Customers", FormMethod.Post, new { id = acc.FirstOrDefault().ID }))
+                {
+                    <div class="form-group">
+                        <label style="display:inline-block; color:black; font-size:150%;">Name</label>
+                        <br />
+                        <div style="width:100%; display:inline-block"><input placeholder="@acc.FirstOrDefault().Name" style="width:100%; background-color:lightblue; border-radius: 10px; font-size: 20px" type="text" class="form-control" disabled></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:inline-block; color:black; font-size:150%;">Username</label>
+                        <br />
+                        <div style="width:100%; display:inline-block;"><input placeholder="@acc.FirstOrDefault().Code" style="width:100%;background-color:lightblue; border-radius: 10px; font-size: 20px" type="text" class="form-control" disabled></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:inline-block; color:black; font-size:150%;">Email</label>
+                        <br />
+                        <div style="width:100%; display:inline-block;"><input placeholder="@acc.FirstOrDefault().Email" style="width:100%;background-color:lightblue; border-radius: 10px; font-size: 20px" type="text" class="form-control" disabled></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:inline-block; color:black; font-size:150%;">Birthday</label>
+                        <br />
+                        <div style="width:100%; display:inline-block;"><input placeholder="@acc.FirstOrDefault().DateOfBirth" style="width:100%;background-color:lightblue; border-radius: 10px; font-size: 20px" type="text" class="form-control" disabled></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:inline-block; color:black; font-size:150%;">Phone</label>
+                        <br />
+                        <div style="width:100%; display:inline-block;"><input placeholder="@acc.FirstOrDefault().Phone" style="width:100%;background-color:lightblue; border-radius: 10px; font-size: 20px" type="text" class="form-control" disabled></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

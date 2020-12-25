@@ -1,0 +1,80 @@
+﻿@using FaceRecog.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/content/asset/css/plugins/datatables.bootstrap.min.css" />
+}
+@section scripts{
+    <script src="~/content/asset/js/plugins/jquery.datatables.min.js"></script>
+    <script src="~/content/asset/js/plugins/datatables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatables-example').DataTable();
+        });
+    </script>
+    <script>
+        function getDiemdanh(IdDiemDanh) {
+            $.ajax({
+                url: "/diemdanhs/LoadDiemdanh",
+                type: "POST",
+                dataType: 'json',
+                data: { IdDiemdanh: IdDiemDanh },
+                success: function (response) {
+                    if (response.success) {
+                        $('.code').val(response.code);
+                        $('.name').val(response.name);
+                        $('.monhoc').val(response.mon);
+                        $('.date').val(response.ngay);
+                        $('.time').val(response.gio);
+                    }
+                }
+            });
+        }
+    </script>
+
+}
+@{
+    DiemdanhEntities db = new DiemdanhEntities();
+    int id = int.Parse(Request.Cookies["PersonId"].Value);
+    var listDD = from e in db.diemdanhs where e.ID == id select e;
+    var listP = from e in db.People where e.ID == id select e;
+    var listM = from e in db.monhocs select e;
+}
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>THONG TIN DIEM DANH</h3></div>
+            <div class="panel-body">
+                <div class="responsive-table">
+                    <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Ma Sinh vien</th>
+                                <th>Ho va Ten</th>
+                                <th>Mon hoc</th>
+                                <th>Ngay diem danh</th>
+                                <th>Gio diem danh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in listDD)
+                                {
+                                    <tr onclick="getDiemdanh(@item.IdDiemDanh)" style="cursor:pointer;">
+                                        <td>@item.Person.Code</td>
+                                        <td>@item.Person.Name</td>
+                                        <td>@item.monhoc.nameMonHoc</td>
+                                        <td>@item.Date</td>
+                                        <td>@item.time</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

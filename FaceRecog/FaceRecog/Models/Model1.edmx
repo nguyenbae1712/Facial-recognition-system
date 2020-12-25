@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DiemdanhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="diemdanh">
+          <Key>
+            <PropertyRef Name="IdDiemDanh" />
+          </Key>
+          <Property Name="IdDiemDanh" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="IdMonHoc" Type="int" Nullable="false" />
+          <Property Name="time" Type="nvarchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityType Name="monhoc">
+          <Key>
+            <PropertyRef Name="IdMonHoc" />
+          </Key>
+          <Property Name="IdMonHoc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codeMonHoc" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="nameMonHoc" Type="nvarchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityType Name="People">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="150" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="IdRole" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_diemdanh_monhoc">
+          <End Role="monhoc" Type="Self.monhoc" Multiplicity="1" />
+          <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="monhoc">
+              <PropertyRef Name="IdMonHoc" />
+            </Principal>
+            <Dependent Role="diemdanh">
+              <PropertyRef Name="IdMonHoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_diemdanh_people">
+          <End Role="People" Type="Self.People" Multiplicity="1" />
+          <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="diemdanh">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_People_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="People" Type="Self.People" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="People">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DiemdanhModelStoreContainer">
+          <EntitySet Name="diemdanh" EntityType="Self.diemdanh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="monhoc" EntityType="Self.monhoc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="People" EntityType="Self.People" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_diemdanh_monhoc" Association="Self.FK_diemdanh_monhoc">
+            <End Role="monhoc" EntitySet="monhoc" />
+            <End Role="diemdanh" EntitySet="diemdanh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_diemdanh_people" Association="Self.FK_diemdanh_people">
+            <End Role="People" EntitySet="People" />
+            <End Role="diemdanh" EntitySet="diemdanh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_People_role" Association="Self.FK_People_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="People" EntitySet="People" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DiemdanhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="diemdanh">
+          <Key>
+            <PropertyRef Name="IdDiemDanh" />
+          </Key>
+          <Property Name="IdDiemDanh" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdMonHoc" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="monhoc" Relationship="Self.FK_diemdanh_monhoc" FromRole="diemdanh" ToRole="monhoc" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_diemdanh_people" FromRole="diemdanh" ToRole="People" />
+        </EntityType>
+        <EntityType Name="monhoc">
+          <Key>
+            <PropertyRef Name="IdMonHoc" />
+          </Key>
+          <Property Name="IdMonHoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codeMonHoc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nameMonHoc" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="diemdanhs" Relationship="Self.FK_diemdanh_monhoc" FromRole="monhoc" ToRole="diemdanh" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IdRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="diemdanhs" Relationship="Self.FK_diemdanh_people" FromRole="People" ToRole="diemdanh" />
+          <NavigationProperty Name="role" Relationship="Self.FK_People_role" FromRole="People" ToRole="role" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="People" Relationship="Self.FK_People_role" FromRole="role" ToRole="People" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_diemdanh_monhoc">
+          <End Role="monhoc" Type="Self.monhoc" Multiplicity="1" />
+          <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="monhoc">
+              <PropertyRef Name="IdMonHoc" />
+            </Principal>
+            <Dependent Role="diemdanh">
+              <PropertyRef Name="IdMonHoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_diemdanh_people">
+          <End Role="People" Type="Self.Person" Multiplicity="1" />
+          <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="diemdanh">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_People_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="People" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="People">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DiemdanhEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="diemdanhs" EntityType="Self.diemdanh" />
+          <EntitySet Name="monhocs" EntityType="Self.monhoc" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_diemdanh_monhoc" Association="Self.FK_diemdanh_monhoc">
+            <End Role="monhoc" EntitySet="monhocs" />
+            <End Role="diemdanh" EntitySet="diemdanhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_diemdanh_people" Association="Self.FK_diemdanh_people">
+            <End Role="People" EntitySet="People" />
+            <End Role="diemdanh" EntitySet="diemdanhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_People_role" Association="Self.FK_People_role">
+            <End Role="role" EntitySet="roles" />
+            <End Role="People" EntitySet="People" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DiemdanhModelStoreContainer" CdmEntityContainer="DiemdanhEntities">
+          <EntitySetMapping Name="diemdanhs">
+            <EntityTypeMapping TypeName="DiemdanhModel.diemdanh">
+              <MappingFragment StoreEntitySet="diemdanh">
+                <ScalarProperty Name="IdDiemDanh" ColumnName="IdDiemDanh" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdMonHoc" ColumnName="IdMonHoc" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="monhocs">
+            <EntityTypeMapping TypeName="DiemdanhModel.monhoc">
+              <MappingFragment StoreEntitySet="monhoc">
+                <ScalarProperty Name="IdMonHoc" ColumnName="IdMonHoc" />
+                <ScalarProperty Name="codeMonHoc" ColumnName="codeMonHoc" />
+                <ScalarProperty Name="nameMonHoc" ColumnName="nameMonHoc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="DiemdanhModel.Person">
+              <MappingFragment StoreEntitySet="People">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="DiemdanhModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DiemdanhModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

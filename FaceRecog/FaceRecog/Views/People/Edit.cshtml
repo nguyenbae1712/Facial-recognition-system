@@ -1,0 +1,146 @@
+﻿@model FaceRecog.Models.Person
+@using FaceRecog.Models;
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@{
+    DiemdanhEntities db = new DiemdanhEntities();
+    int id = int.Parse(Request.Cookies["PersonId"].Value);
+    var acc = from e in db.People
+              where e.ID == id
+              select e;
+}
+
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-8">
+        <div class="panel">
+            <div class="panel-heading"><h3>THONG TIN SINH VIEN</h3></div>
+            <div class="panel-body">
+                <div class="responsive-table">
+                    <div class="col-lg-9">
+                        <div class="bg-white-right">
+                            @using (Html.BeginForm("Update", "People", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.ID)
+
+                                    <input type="number" name="txtId" value="@Model.ID" hidden />
+                                    <div class="form-group">
+                                        @Html.HiddenFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.HiddenFor(model => model.Code, new { htmlAttributes = new { placeholder = "Ma SV", name = "txtCode", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Ho va Ten", name = "txtName", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Email", name = "txtEmail", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { placeholder = "Address", name = "txtAd", @class = "form-control", @style = "font-size:2rem;border-color:#ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { placeholder = "YYYY-MM-DD", name = "txtBirthday", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { placeholder = "Phone number", name = "txtPhone", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Save Change" name="btnUpdate" class="btn btn-default" style="background-color:lightskyblue !important;border-radius:10px !important;color:black !important" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel">
+            <div class="panel-heading"><h3>DOI MAT KHAU</h3></div>
+            <div class="panel-body">
+                <div class="responsive-table">
+                    <div class="col-lg-12">
+                        <div class="bg-white-right"  style="height:650px !important" >
+                            @using (Html.BeginForm("Update", "People", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.ID)
+                                    <div class="form-group">
+                                        @Html.HiddenFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.HiddenFor(model => model.Code, new { htmlAttributes = new { placeholder = "Ma SV", name = "txtCode", @class = "form-control", @style = "font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" } })
+                                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <input type="number" name="txtId" value="@Model.ID" hidden />
+                                    <div class="form-group">
+                                        @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                        <label class="control-label col-md-6">Old Password</label>
+                                        <div class="col-md-12">
+
+                                            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @style = "font-size:3rem;border-color: gray;background-color: lightblue;border-radius: 10px;color: black;" } })
+                                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                                            <input type="password" name="txtOldPass" class="form-control" style="font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px !important;color: #58666E;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">New Password</label>
+                                        <div class="col-md-12">
+                                            <input type="password" name="txtNewPass" class="form-control" style="font-size:2rem;border-color: #ddd;background-color: #F9F9F9;border-radius: 10px ;color: #58666E;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="ChangePassword" name="btnUpdate" class="btn btn-default" style="background-color:lightskyblue !important;border-radius:10px !important;color:black !important" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
