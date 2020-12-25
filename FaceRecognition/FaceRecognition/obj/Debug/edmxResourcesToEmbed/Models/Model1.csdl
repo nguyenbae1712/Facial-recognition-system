@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="diemdanh">
+    <Key>
+      <PropertyRef Name="IdDiemDanh" />
+    </Key>
+    <Property Name="IdDiemDanh" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdMonHoc" Type="Int32" Nullable="false" />
+    <Property Name="time" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="monhoc" Relationship="Self.FK_diemdanh_monhoc" FromRole="diemdanh" ToRole="monhoc" />
+    <NavigationProperty Name="Person" Relationship="Self.FK_diemdanh_People" FromRole="diemdanh" ToRole="People" />
+  </EntityType>
+  <EntityType Name="monhoc">
+    <Key>
+      <PropertyRef Name="IdMonHoc" />
+    </Key>
+    <Property Name="IdMonHoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nameMonHoc" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="diemdanhs" Relationship="Self.FK_diemdanh_monhoc" FromRole="monhoc" ToRole="diemdanh" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="diemdanhs" Relationship="Self.FK_diemdanh_People" FromRole="People" ToRole="diemdanh" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="MasoSV" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_diemdanh_monhoc">
+    <End Role="monhoc" Type="Self.monhoc" Multiplicity="1" />
+    <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="monhoc">
+        <PropertyRef Name="IdMonHoc" />
+      </Principal>
+      <Dependent Role="diemdanh">
+        <PropertyRef Name="IdMonHoc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_diemdanh_People">
+    <End Role="People" Type="Self.Person" Multiplicity="1" />
+    <End Role="diemdanh" Type="Self.diemdanh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="People">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="diemdanh">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="diemdanhs" EntityType="Self.diemdanh" />
+    <EntitySet Name="monhocs" EntityType="Self.monhoc" />
+    <EntitySet Name="People" EntityType="Self.Person" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_diemdanh_monhoc" Association="Self.FK_diemdanh_monhoc">
+      <End Role="monhoc" EntitySet="monhocs" />
+      <End Role="diemdanh" EntitySet="diemdanhs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_diemdanh_People" Association="Self.FK_diemdanh_People">
+      <End Role="People" EntitySet="People" />
+      <End Role="diemdanh" EntitySet="diemdanhs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
