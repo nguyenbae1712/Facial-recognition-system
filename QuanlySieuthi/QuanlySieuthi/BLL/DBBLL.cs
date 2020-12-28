@@ -33,13 +33,37 @@ namespace QuanlySieuthi.BLL
         {
             return DBDAL.Instance.GetProductByID(id);
         }
-        public bool Edit(Product prod)
+        public object LoadNSX()
         {
-            return DBDAL.Instance.Edit(prod);
+            return DBDAL.Instance.GetNSX();
+        }
+        public List<Product> LoadProduct()
+        {
+            return DBDAL.Instance.GetProducts();
+        }
+        public object LoadRecordProduct()
+        {
+            return DBDAL.Instance.GetRecordProduct();
+        }
+        public bool Add(Product prod)
+        {
+            return DBDAL.Instance.Add(prod);
+        }
+        //public bool Update(int prodId, string prodname, DateTime DateIn, string NSX, bool state, int catid )
+        //{
+        //    return DBDAL.Instance.Update(prodId,prodname,DateIn,NSX,state,catid);
+        //}
+        public bool Update(Product prod)
+        {
+            return DBDAL.Instance.Update(prod);
         }
         public bool Delete(int id)
         {
             return DBDAL.Instance.Delete(id);
+        }
+        public List<Product> Search(List<Product> list, string str)
+        {
+            return list.Where(p => p.ProdName.Contains(str)).ToList();
         }
     }
 }

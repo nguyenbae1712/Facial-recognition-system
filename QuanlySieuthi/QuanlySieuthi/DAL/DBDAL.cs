@@ -9,6 +9,7 @@ namespace QuanlySieuthi.DAL
 {
     public class DBDAL
     {
+        Model1 db = new Model1();
         private static DBDAL instance;
         public static DBDAL Instance
         {
@@ -22,71 +23,75 @@ namespace QuanlySieuthi.DAL
         private DBDAL() { }
         public List<Category> GetCategories()
         {
-            using (Model1 db = new Model1())
-            {
-                return db.Categories.ToList();
-            }
+            return db.Categories.Distinct().ToList();
+        }
+        public List<Product> GetProducts()
+        {
+            return db.Products.ToList();
+        }
+        public object GetNSX()
+        {
+            return db.Products.Select(p => p.NSX).Distinct().ToList();
         }
         public List<Product> GetProductsbyCatId(int id)
         {
-            using(Model1 db = new Model1())
-            {
-                return db.Products.Where(p => p.CatId == id).ToList();
-            }
+            return db.Products.Where(p => p.CatId == id).ToList();
         }
         public Product GetProductByID(int id)
         {
-            using (Model1 db = new Model1())
-            {
-                return db.Products.Where(p => p.ProdID == id).SingleOrDefault();
-            }
+            return db.Products.Where(p => p.ProdID == id).SingleOrDefault();
         }
-        public bool Edit(Product prod)
+        public object GetRecordProduct()
         {
-            using (Model1 db = new Model1())
+            var record = db.Products.Select(p => new
             {
-                var e = db.Products.Where(p => p.ProdID == prod.ProdID).SingleOrDefault();
-                e.ProdName = prod.ProdName;
-                e.DateIn = prod.DateIn;
-                e.State = prod.State;
-                e.NSX = prod.NSX;
-                e.CatId = prod.CatId;
-                try 
-                {
-                    db.SaveChanges();
-                    return true;
-                } catch
-                {
-                    return false;
-                }
+                ProdId = p.ProdID,
+                ProdName = p.ProdName,
+                NSX = p.NSX,
+                DateIn = p.DateIn,
+                CatName = p.Category.CatName,
+                State = p.State
+            }) ;
+            return record.ToList();
+        }
+        public bool Update(Product prod)
+        {
+            var e = db.Products.Where(p => p.ProdID == prod.ProdID).SingleOrDefault();
+            e.ProdName = prod.ProdName;
+            e.DateIn = prod.DateIn;
+            e.State = prod.State;
+            e.NSX = prod.NSX;
+            e.CatId = prod.CatId;
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
         public bool Add(Product prod)
         {
-            using(Model1 db = new Model1())
+            try
             {
-                try
-                {
-                    db.Products.Add(prod);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch { return false; }
+                db.Products.Add(prod);
+                db.SaveChanges();
+                return true;
             }
+            catch { return false; }
         }
         public bool Delete(int id)
         {
-            using (Model1 db = new Model1())
+            var e = db.Products.Where(p => p.ProdID == id).SingleOrDefault();
+            try
             {
-                var e = db.Products.Where(p => p.ProdID == id).SingleOrDefault();
-                try
-                {
-                    db.Products.Remove(e);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch { return false; }
+                db.Products.Remove(e);
+                db.SaveChanges();
+                return true;
             }
+            catch { return false; }
         }
     }
 }
